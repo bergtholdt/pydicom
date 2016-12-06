@@ -29,7 +29,7 @@ from pydicom.sequence import Sequence
 from pydicom.tag import (ItemTag, SequenceDelimiterTag, TupleTag, Tag, BaseTag)
 import pydicom.uid
 from pydicom.util.hexutil import bytes2hex
-from pydicom.valuerep import extra_length_VRs
+from pydicom.valuerep import extra_length_VRs, all_VRs
 
 
 class DicomIter(object):
@@ -535,7 +535,7 @@ def _read_file_meta_info(fp):
 
     def _not_group_0002(tag, VR, length):
         """Return True if the tag is not in group 0x0002, False otherwise."""
-        return tag.group != 2
+        return (tag.group != 2 or VR not in all_VRs)
 
     start_file_meta = fp.tell()
     file_meta = read_dataset(fp, is_implicit_VR=False, is_little_endian=True,
